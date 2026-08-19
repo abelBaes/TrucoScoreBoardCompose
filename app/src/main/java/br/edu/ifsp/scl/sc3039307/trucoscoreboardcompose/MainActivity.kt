@@ -55,10 +55,11 @@ fun ScoreScreen(modifier: Modifier = Modifier){
     val teamAHasGamePoint = teamAPoints == 11
     val teamBHasGamePoint = teamBPoints == 11
     val winnerMessage = when {
-        teamAPoints == 12 -> "Equipe A venceu a partida!"
-        teamBPoints == 12 -> "Equipe B venceu a partida!"
+        teamAPoints >= 12 -> "Equipe A venceu a partida!"
+        teamBPoints >= 12 -> "Equipe B venceu a partida!"
         else -> ""
     }
+    val hasNoWinner = winnerMessage.isEmpty()
 
     Column(
         modifier = modifier
@@ -78,13 +79,15 @@ fun ScoreScreen(modifier: Modifier = Modifier){
                 "Equipe A",
                 teamAPoints,
                 {points -> teamAPoints += points},
-                Modifier.weight(1f)
+                Modifier.weight(1f),
+                hasNoWinner
             )
             TeamCard(
                 "Equipe B",
                 teamBPoints,
                 {points -> teamBPoints += points},
-                Modifier.weight(1f)
+                Modifier.weight(1f),
+                hasNoWinner
             )
         }
         Button(
@@ -105,6 +108,7 @@ fun ScoreScreen(modifier: Modifier = Modifier){
                 text = "Equipe A alcançou a mão de 11!",
                 fontSize = 25.sp,
                 color = Color.Blue,
+                textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(10.dp))
         }
@@ -113,6 +117,7 @@ fun ScoreScreen(modifier: Modifier = Modifier){
                 text = "Equipe B alcançou a mão de 11!",
                 fontSize = 25.sp,
                 color = Color.Red,
+                textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(10.dp))
         }
@@ -120,6 +125,7 @@ fun ScoreScreen(modifier: Modifier = Modifier){
             text = winnerMessage,
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
             modifier = Modifier
                 .padding(top = 20.dp)
         )
@@ -132,7 +138,8 @@ fun TeamCard(
     teamName: String,
     teamPoints: Int,
     addPoints: (Int) -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
+    hasNoWinner: Boolean
 ){
     Column(
         modifier = modifier
@@ -158,6 +165,7 @@ fun TeamCard(
             modifier = Modifier
                 .padding(5.dp),
             onClick = {addPoints(1)},
+            enabled = hasNoWinner
 
         ){
             Text(
@@ -170,11 +178,12 @@ fun TeamCard(
             modifier = Modifier
                 .padding(5.dp),
             onClick = {addPoints(3)},
+            enabled = hasNoWinner
             ){
             Text(
                 text = "+3 Pontos",
                 fontSize = 20.sp,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
         }
     }
