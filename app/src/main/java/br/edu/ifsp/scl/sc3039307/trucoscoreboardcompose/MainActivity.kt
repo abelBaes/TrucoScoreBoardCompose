@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -47,6 +48,8 @@ fun ScoreScreen(modifier: Modifier = Modifier){
     var teamAPoints by remember { mutableIntStateOf(0) }
     var teamBPoints by remember { mutableIntStateOf(0) }
 
+    val hasZeroScore = teamAPoints == 0 && teamBPoints == 0
+
     Column(
         modifier = modifier
             .fillMaxWidth(),
@@ -65,13 +68,26 @@ fun ScoreScreen(modifier: Modifier = Modifier){
                 "Equipe A",
                 teamAPoints,
                 {points -> teamAPoints += points},
-                Modifier
+                Modifier.weight(1f)
             )
             TeamCard(
                 "Equipe B",
                 teamBPoints,
                 {points -> teamBPoints += points},
-                Modifier
+                Modifier.weight(1f)
+            )
+        }
+        Button(
+            onClick = {teamAPoints = 0
+                       teamBPoints = 0},
+            enabled = !hasZeroScore,
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(20.dp)
+        ) {
+            Text(
+                text = "Reiniciar Pontuação",
+                fontSize = 20.sp
             )
         }
 
