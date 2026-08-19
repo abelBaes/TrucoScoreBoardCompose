@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -47,9 +48,8 @@ fun ScoreScreen(modifier: Modifier = Modifier){
     var teamBPoints by remember { mutableIntStateOf(0) }
 
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 40.dp, bottom = 20.dp),
+        modifier = modifier
+            .fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
@@ -57,12 +57,24 @@ fun ScoreScreen(modifier: Modifier = Modifier){
             fontSize = 30.sp,
             modifier = Modifier.padding(10.dp),
         )
-        TeamCard(
-            "Equipe A",
-            teamAPoints,
-            {points -> teamAPoints += points},
-            Modifier
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+        ){
+            TeamCard(
+                "Equipe A",
+                teamAPoints,
+                {points -> teamAPoints += points},
+                Modifier
+            )
+            TeamCard(
+                "Equipe B",
+                teamBPoints,
+                {points -> teamBPoints += points},
+                Modifier
+            )
+        }
+
     }
 }
 
@@ -71,10 +83,10 @@ fun TeamCard(
     teamName: String,
     teamPoints: Int,
     addPoints: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier
 ){
     Column(
-        modifier = Modifier
+        modifier = modifier
             .padding(20.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
