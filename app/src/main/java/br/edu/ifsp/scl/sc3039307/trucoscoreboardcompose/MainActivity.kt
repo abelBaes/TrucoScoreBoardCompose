@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,6 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import br.edu.ifsp.scl.sc3039307.trucoscoreboardcompose.ui.theme.TrucoScoreBoardComposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -49,6 +52,13 @@ fun ScoreScreen(modifier: Modifier = Modifier){
     var teamBPoints by remember { mutableIntStateOf(0) }
 
     val hasZeroScore = teamAPoints == 0 && teamBPoints == 0
+    val teamAHasGamePoint = teamAPoints == 11
+    val teamBHasGamePoint = teamBPoints == 11
+    val winnerMessage = when {
+        teamAPoints == 12 -> "Equipe A venceu a partida!"
+        teamBPoints == 12 -> "Equipe B venceu a partida!"
+        else -> ""
+    }
 
     Column(
         modifier = modifier
@@ -90,6 +100,29 @@ fun ScoreScreen(modifier: Modifier = Modifier){
                 fontSize = 20.sp
             )
         }
+        AnimatedVisibility(visible = teamAHasGamePoint) {
+            Text(
+                text = "Equipe A alcançou a mão de 11!",
+                fontSize = 25.sp,
+                color = Color.Blue,
+                modifier = Modifier
+                    .padding(10.dp))
+        }
+        AnimatedVisibility(visible = teamBHasGamePoint) {
+            Text(
+                text = "Equipe B alcançou a mão de 11!",
+                fontSize = 25.sp,
+                color = Color.Red,
+                modifier = Modifier
+                    .padding(10.dp))
+        }
+        Text(
+            text = winnerMessage,
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .padding(top = 20.dp)
+        )
 
     }
 }
